@@ -698,6 +698,10 @@ describe("EditAutomationModal", () => {
 it("does not clear a catalog automation's required agent profile", async () => {
   vi.mocked(AutomationService.getCapabilities).mockResolvedValue({
     ready: true,
+    triggerKinds: ["cron"],
+    eventSources: [],
+    eventTypes: [],
+    triggers: {},
     features: ["agentProfiles"],
   });
   const user = userEvent.setup();
