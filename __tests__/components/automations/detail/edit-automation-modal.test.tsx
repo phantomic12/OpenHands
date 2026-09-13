@@ -1,4 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { AUTOMATION_CATALOG } from "@openhands/extensions/automations";
+import * as automationCatalog from "#/utils/automation-catalog";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -695,7 +697,14 @@ describe("EditAutomationModal", () => {
   });
 });
 
+afterEach(() => vi.restoreAllMocks());
+
 it("does not clear a catalog automation's required agent profile", async () => {
+  // This capability is consumed before the updated catalog is released.
+  vi.spyOn(automationCatalog, "getAutomationTemplateEntry").mockReturnValue({
+    ...AUTOMATION_CATALOG[0],
+    requires: { integrations: {}, features: ["agentProfiles"] },
+  });
   vi.mocked(AutomationService.getCapabilities).mockResolvedValue({
     ready: true,
     triggerKinds: ["cron"],
@@ -714,5 +723,7 @@ it("does not clear a catalog automation's required agent profile", async () => {
   });
   await user.click(screen.getByTestId("edit-automation-save"));
   expect(AutomationService.updateAutomation).not.toHaveBeenCalled();
-  expect(screen.getByRole("alert")).toHaveTextContent("SETUP$VALIDATION_REQUIRED");
+  expect(screen.getByRole("alert")).toHaveTextContent(
+    "SETUP$VALIDATION_REQUIRED",
+  );
 });
