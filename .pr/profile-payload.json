@@ -1,0 +1,16 @@
+[
+  {
+    "variant": "after",
+    "url": "http://127.0.0.1:9107/automations/0b5d1ae7-7f64-4db5-af1b-55060dfc3355",
+    "agent_profile_id": "07527f65-27d8-4cd3-91ed-721694a789f6",
+    "body_keys": [
+      "name",
+      "agent_profile_id",
+      "trigger",
+      "tarball_path",
+      "entrypoint",
+      "timeout",
+      "template"
+    ]
+  }
+]
